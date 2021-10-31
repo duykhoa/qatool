@@ -12,6 +12,8 @@ class SchemaEntity(
     @Column(nullable = false)
     val name: String,
 
-    @OneToMany(mappedBy = "schema")
+    @OneToMany(mappedBy = "schema", fetch = FetchType.EAGER)
     val columns: List<SchemaColumnEntity>
-)
+) {
+    private constructor(): this(0, "", emptyList())
+}

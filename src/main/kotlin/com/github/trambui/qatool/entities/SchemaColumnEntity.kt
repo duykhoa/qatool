@@ -21,4 +21,6 @@ class SchemaColumnEntity (
     @ManyToOne()
     @JoinColumn(name = "schema_id")
     val schema: SchemaEntity?,
-)
+) {
+    private constructor(): this(0, "", "", "", null)
+}

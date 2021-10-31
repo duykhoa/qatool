@@ -1,6 +1,9 @@
 package com.github.trambui.qatool.controllers
 
+import com.github.trambui.qatool.dto.ColumnDto
+import com.github.trambui.qatool.dto.ColumnRespDto
 import com.github.trambui.qatool.dto.SchemaDto
+import com.github.trambui.qatool.dto.SchemaRespDto
 import com.github.trambui.qatool.entities.SchemaColumnEntity
 import com.github.trambui.qatool.entities.SchemaEntity
 import com.github.trambui.qatool.repositories.SchemaColumnDao
@@ -45,9 +48,14 @@ class SchemaController {
     }
 
     @GetMapping("/{name}")
-    fun get(@PathVariable name: String): Int {
+    fun get(@PathVariable name: String): List<SchemaRespDto> {
         val schemas = this.schemaDao.findByName(name)
 
-        return schemas.size
+        return schemas.map { schema -> toSchemaResp(schema) }
+    }
+
+    private fun toSchemaResp(schema: SchemaEntity): SchemaRespDto {
+        val columns = schema.columns.map { col -> ColumnRespDto(col.id, col.name, col.type, col.conditionClass) }
+        return SchemaRespDto(schema.id, schema.name, columns)
     }
 }
