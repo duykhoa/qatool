@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SchemaDao: CrudRepository<SchemaEntity, Long> {
+interface SchemaDao: CrudRepository<SchemaEntity, Int> {
     fun findByName(name: String): List<SchemaEntity>
 }

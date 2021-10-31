@@ -33,6 +33,9 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("com.github.javafaker:javafaker:1.0.2")
+	implementation("org.apache.poi:poi:4.1.2")
+	implementation("org.apache.poi:poi-ooxml:4.1.2")
 }
 
 tasks.withType<KotlinCompile> {
