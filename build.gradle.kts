@@ -36,13 +36,7 @@ dependencies {
 	implementation("com.github.javafaker:javafaker:1.0.2")
 	implementation("org.apache.poi:poi:4.1.2")
 	implementation("org.apache.poi:poi-ooxml:4.1.2")
-}
-
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "11"
-	}
+	implementation("com.opencsv:opencsv:4.1")
 }
 
 tasks.withType<Test> {

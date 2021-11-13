@@ -1,6 +1,5 @@
 package com.github.trambui.qatool.controllers
 
-import com.github.trambui.qatool.dto.ColumnDto
 import com.github.trambui.qatool.dto.ColumnRespDto
 import com.github.trambui.qatool.dto.SchemaDto
 import com.github.trambui.qatool.dto.SchemaRespDto
@@ -27,7 +26,7 @@ class SchemaController {
     }
 
     @PostMapping("/")
-    fun create(@RequestBody schemaDto: SchemaDto): SchemaEntity {
+    fun create(@RequestBody schemaDto: SchemaDto): SchemaRespDto {
 
         val schema = SchemaEntity(0, name = schemaDto.name, columns = listOf())
         val createSchema = schemaDao.save(schema)
@@ -42,9 +41,13 @@ class SchemaController {
             )
         }
 
-        val createColumns = schemaColumnDao.saveAll(columns)
+        schemaColumnDao.saveAll(columns)
 
-        return createSchema
+        return SchemaRespDto(
+            createSchema.id,
+            createSchema.name,
+            createSchema.columns.map { c -> ColumnRespDto(c.id, c.name, c.type, c.conditionClass) }
+        )
     }
 
     @GetMapping("/{name}")

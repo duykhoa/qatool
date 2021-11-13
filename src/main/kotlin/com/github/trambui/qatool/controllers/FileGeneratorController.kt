@@ -1,28 +1,26 @@
 package com.github.trambui.qatool.controllers
 
-import com.github.javafaker.Faker
 import com.github.trambui.qatool.dto.FileGenDto
-import com.github.trambui.qatool.entities.SchemaColumnEntity
-import com.github.trambui.qatool.entities.SchemaEntity
+import com.github.trambui.qatool.enums.FileType
 import com.github.trambui.qatool.repositories.SchemaDao
-import org.apache.poi.ss.usermodel.Sheet
-import org.apache.poi.ss.usermodel.Workbook
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import com.github.trambui.qatool.services.CSVGenerator
+import com.github.trambui.qatool.services.ExcelGenerator
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.io.File
-import java.io.FileOutputStream
-import java.util.*
-
+import javax.annotation.Resource
 
 @RestController
 @RequestMapping("/filegen")
 class FileGeneratorController {
     private var schemaDao: SchemaDao
+    private var excelFileGen: ExcelGenerator;
+    private var csvFileGen: CSVGenerator;
 
-    constructor(schemaDao: SchemaDao) {
+    constructor(schemaDao: SchemaDao, excelFileGen: ExcelGenerator, csvFileGen: CSVGenerator) {
         this.schemaDao = schemaDao
+        this.excelFileGen = excelFileGen
+        this.csvFileGen = csvFileGen
     }
 
     @PostMapping("/")
@@ -33,55 +31,18 @@ class FileGeneratorController {
             return ResponseEntity("Schema doesn't exist", HttpStatus.UNPROCESSABLE_ENTITY)
         }
 
-        val workbook = createWorkBook(fileGenDto, schema)
-
-        val fileLocation = writeToFile(workbook, fileGenDto.fileName)
-        return ResponseEntity(fileLocation, HttpStatus.OK)
-    }
-
-    fun writeToFile(workbook: Workbook, fileName: String): String {
-        val currDir = File(".")
-        val path: String = currDir.absolutePath
-        val fileLocation = path.substring(0, path.length - 1) + "${fileName}.xlsx"
-
-        val outputStream = FileOutputStream(fileLocation)
-        workbook.write(outputStream)
-        workbook.close()
-
-        return fileLocation
-    }
-
-    fun createWorkBook(fileGenDto: FileGenDto, schema: Optional<SchemaEntity>): Workbook {
-        val faker = Faker()
-
-        val workbook: Workbook = XSSFWorkbook()
-        val sheet: Sheet = workbook.createSheet("Data")
-
-        val headerRow = sheet.createRow(0)
-        val columns = schema.get().columns
-
-        columns.forEachIndexed { idx, column ->
-            val cell1 = headerRow.createCell(idx)
-            cell1.setCellValue(column.name)
-        }
-
-        for (i in 1..fileGenDto.rows) {
-            val dataRow = sheet.createRow(i)
-            columns.forEachIndexed { idx, column ->
-                val cell1 = dataRow.createCell(idx)
-                cell1.setCellValue(randomData(column, faker))
+        when (fileGenDto.format) {
+            FileType.EXCEL -> {
+                val fileLocation = excelFileGen.generate(fileGenDto, schema);
+                return ResponseEntity(fileLocation, HttpStatus.OK)
+            }
+            FileType.CSV -> {
+                val fileLocation = csvFileGen.generate(fileGenDto, schema);
+                return ResponseEntity(fileLocation, HttpStatus.OK)
+            }
+            else -> {
+                return ResponseEntity("Format is not supported", HttpStatus.BAD_REQUEST)
             }
         }
-
-        return workbook;
-    }
-
-    private fun randomData(column: SchemaColumnEntity, faker: Faker): String {
-        val randomFunction = mapOf(
-            "number" to { -> "${faker.number()}" },
-            "string" to { -> faker.lorem().words(3).joinToString(" ") }
-        )
-
-        return randomFunction[column.type]!!.invoke()
     }
 }
