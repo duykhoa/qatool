@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS schema_columns;
-DROP TABLE IF EXISTS schemas;
+--DROP TABLE IF EXISTS schema_columns;
+--DROP TABLE IF EXISTS schemas;
 
 CREATE TABLE schemas (
     id INT AUTO_INCREMENT PRIMARY KEY,
