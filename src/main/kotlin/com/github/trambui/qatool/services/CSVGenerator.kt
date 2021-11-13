@@ -35,8 +35,8 @@ class CSVGenerator : FileGenerator {
 
     private fun randomData(column: SchemaColumnEntity, faker: Faker): String {
         val randomFunction = mapOf(
-            "number" to { -> "${faker.number().randomNumber()}" },
-            "string" to { -> faker.lorem().words(3).joinToString(" ") }
+            "number" to { "${faker.number().randomNumber()}" },
+            "string" to { faker.lorem().words(3).joinToString(" ") }
         )
 
         return randomFunction[column.type]!!.invoke()
