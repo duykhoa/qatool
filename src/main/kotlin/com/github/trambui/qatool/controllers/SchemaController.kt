@@ -22,7 +22,7 @@ class SchemaController {
 
     @GetMapping("/")
     fun index(): String {
-        return "test first";
+        return "test first"
     }
 
     @PostMapping("/")

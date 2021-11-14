@@ -21,7 +21,7 @@ class SchemaColumnEntity (
 
     @Column(nullable = true, columnDefinition = "TEXT")
     @Convert(converter = HashMapConverter::class)
-    val arguments: Map<String, Object?>?,
+    val arguments: Map<String, Any?>?,
 
     @ManyToOne()
     @JoinColumn(name = "schema_id")

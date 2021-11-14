@@ -17,7 +17,7 @@ class Randomize {
         this.faker = faker
     }
 
-    fun random(type: String, conditionClass: String?, argument: Map<String, Object?>?): String {
+    fun random(type: String, conditionClass: String?, argument: Map<String, Any?>?): String {
         val faker = Faker()
         val randomFunction = mapOf(
             "number" to { faker.number().numberBetween(10001, Int.MAX_VALUE).toString() },
@@ -49,7 +49,7 @@ class Randomize {
         return randomFunction[type]!!.invoke()
     }
 
-    fun getString(conditionClass: String?, argument: Map<String, Object?>?): String {
+    fun getString(conditionClass: String?, argument: Map<String, Any?>?): String {
         return when (conditionClass) {
             "name" -> {
                 faker.name().toString()
