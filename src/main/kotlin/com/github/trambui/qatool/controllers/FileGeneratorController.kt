@@ -30,17 +30,14 @@ class FileGeneratorController {
             return ResponseEntity("Schema doesn't exist", HttpStatus.UNPROCESSABLE_ENTITY)
         }
 
-        when (fileGenDto.format) {
+        return when (fileGenDto.format) {
             FileType.EXCEL -> {
                 val fileLocation = excelFileGen.generate(fileGenDto, schema)
-                return ResponseEntity(fileLocation, HttpStatus.OK)
+                ResponseEntity(fileLocation, HttpStatus.OK)
             }
             FileType.CSV -> {
                 val fileLocation = csvFileGen.generate(fileGenDto, schema)
-                return ResponseEntity(fileLocation, HttpStatus.OK)
-            }
-            else -> {
-                return ResponseEntity("Format is not supported", HttpStatus.BAD_REQUEST)
+                ResponseEntity(fileLocation, HttpStatus.OK)
             }
         }
     }

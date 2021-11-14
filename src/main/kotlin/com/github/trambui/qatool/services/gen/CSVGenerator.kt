@@ -1,6 +1,5 @@
 package com.github.trambui.qatool.services.gen
 
-import com.github.javafaker.Faker
 import com.github.trambui.qatool.dto.FileGenDto
 import com.github.trambui.qatool.entities.SchemaEntity
 import com.github.trambui.qatool.services.randomize.Randomize
@@ -29,7 +28,7 @@ class CSVGenerator : FileGenerator {
         writer.writeNext(columns.map { c -> c.name }.toTypedArray())
 
         for (i in 1..fileGenDto.rows) {
-            val data = columns.map { c -> this.randomize.random(c.type, c.conditionClass, null) }.toTypedArray()
+            val data = columns.map { c -> this.randomize.random(c.type, c.conditionClass, c.arguments) }.toTypedArray()
             writer.writeNext(data)
         }
 

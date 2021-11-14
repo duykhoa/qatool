@@ -1,8 +1,6 @@
 package com.github.trambui.qatool.services.gen
 
-import com.github.javafaker.Faker
 import com.github.trambui.qatool.dto.FileGenDto
-import com.github.trambui.qatool.entities.SchemaColumnEntity
 import com.github.trambui.qatool.entities.SchemaEntity
 import com.github.trambui.qatool.services.randomize.Randomize
 import org.apache.poi.ss.usermodel.Sheet

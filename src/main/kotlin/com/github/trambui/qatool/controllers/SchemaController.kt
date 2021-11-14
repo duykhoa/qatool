@@ -37,6 +37,7 @@ class SchemaController {
                 name = c.name,
                 type = c.type,
                 conditionClass = c.conditionClass,
+                arguments = c.arguments,
                 schema = schema
             )
         }

@@ -37,6 +37,7 @@ dependencies {
 	implementation("org.apache.poi:poi:4.1.2")
 	implementation("org.apache.poi:poi-ooxml:4.1.2")
 	implementation("com.opencsv:opencsv:4.1")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
 }
 
 tasks.withType<Test> {
