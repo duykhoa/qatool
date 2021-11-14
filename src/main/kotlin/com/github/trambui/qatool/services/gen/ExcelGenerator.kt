@@ -4,6 +4,7 @@ import com.github.javafaker.Faker
 import com.github.trambui.qatool.dto.FileGenDto
 import com.github.trambui.qatool.entities.SchemaColumnEntity
 import com.github.trambui.qatool.entities.SchemaEntity
+import com.github.trambui.qatool.services.randomize.Randomize
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.streaming.SXSSFWorkbook
@@ -14,9 +15,13 @@ import java.util.*
 
 @Service()
 class ExcelGenerator : FileGenerator {
-    override fun generate(fileGenDto: FileGenDto, schema: Optional<SchemaEntity>): String {
-        val faker = Faker()
+    val randomize: Randomize
 
+    constructor(randomize: Randomize) {
+        this.randomize = randomize
+    }
+
+    override fun generate(fileGenDto: FileGenDto, schema: Optional<SchemaEntity>): String {
         val workbook = SXSSFWorkbook(10000)
         val sheet: Sheet = workbook.createSheet("Data")
 
@@ -32,7 +37,7 @@ class ExcelGenerator : FileGenerator {
             val dataRow = sheet.createRow(i)
             columns.forEachIndexed { idx, column ->
                 val cell1 = dataRow.createCell(idx)
-                cell1.setCellValue(randomData(column, faker))
+                cell1.setCellValue(this.randomize.random(column.type, column.conditionClass, null))
             }
         }
 
@@ -49,14 +54,5 @@ class ExcelGenerator : FileGenerator {
         workbook.close()
 
         return fileLocation
-    }
-
-    private fun randomData(column: SchemaColumnEntity, faker: Faker): String {
-        val randomFunction = mapOf(
-            "number" to { -> "${faker.number()}" },
-            "string" to { -> faker.lorem().words(3).joinToString(" ") }
-        )
-
-        return randomFunction[column.type]!!.invoke()
     }
 }

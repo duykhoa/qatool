@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/filegen")
 class FileGeneratorController {
     private var schemaDao: SchemaDao
-    private var excelFileGen: ExcelGenerator;
-    private var csvFileGen: CSVGenerator;
+    private var excelFileGen: ExcelGenerator
+    private var csvFileGen: CSVGenerator
 
     constructor(schemaDao: SchemaDao, excelFileGen: ExcelGenerator, csvFileGen: CSVGenerator) {
         this.schemaDao = schemaDao
@@ -32,11 +32,11 @@ class FileGeneratorController {
 
         when (fileGenDto.format) {
             FileType.EXCEL -> {
-                val fileLocation = excelFileGen.generate(fileGenDto, schema);
+                val fileLocation = excelFileGen.generate(fileGenDto, schema)
                 return ResponseEntity(fileLocation, HttpStatus.OK)
             }
             FileType.CSV -> {
-                val fileLocation = csvFileGen.generate(fileGenDto, schema);
+                val fileLocation = csvFileGen.generate(fileGenDto, schema)
                 return ResponseEntity(fileLocation, HttpStatus.OK)
             }
             else -> {
