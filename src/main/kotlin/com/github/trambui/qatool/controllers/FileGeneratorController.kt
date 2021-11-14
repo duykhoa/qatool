@@ -3,12 +3,11 @@ package com.github.trambui.qatool.controllers
 import com.github.trambui.qatool.dto.FileGenDto
 import com.github.trambui.qatool.enums.FileType
 import com.github.trambui.qatool.repositories.SchemaDao
-import com.github.trambui.qatool.services.CSVGenerator
-import com.github.trambui.qatool.services.ExcelGenerator
+import com.github.trambui.qatool.services.gen.CSVGenerator
+import com.github.trambui.qatool.services.gen.ExcelGenerator
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import javax.annotation.Resource
 
 @RestController
 @RequestMapping("/filegen")

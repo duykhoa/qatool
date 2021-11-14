@@ -1,4 +1,4 @@
-package com.github.trambui.qatool.services
+package com.github.trambui.qatool.services.gen
 
 import com.github.javafaker.Faker
 import com.github.trambui.qatool.dto.FileGenDto
